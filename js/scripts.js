@@ -1,37 +1,39 @@
-// var consonants = ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "r", "s", "t", "v", "w", "x", "z"];
-// var userInput = ["a", "p", "p", "l", "e"];
-// var translator = function(userInput) {
-//   for (var letter = 0; letter < userInput.length; letter++) {
-//     for (var consonant = 0; consonant < consonants.length; consonant++) {
-//       if (consonants[consonant] != userInput[letter]) {
-//         userInput + "ay";
-//       }
-//     }
-//   }
-// }
-
-
 $(document).ready(function() {
   $("form").submit(function(event) {
     event.preventDefault();
 
-    var consonants = ["b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "r", "s", "t", "v", "w", "x", "z"];
+    var vowelArray = ["a", "e", "i", "o", "u"];
     var userInput = $("#userInput").val().toLowerCase().split("");
     var output = [];
 
-
-
       for (var letter = 0; letter < userInput.length; letter++) {
-        for (var consonant = 0; consonant < consonants.length; consonant++) {
-          if (consonants[consonant] !== userInput[letter]) {
-            output.push(userInput[letter] + "ay");
+        for (var vowel = 0; vowel < vowelArray.length; vowel++) {
+          if (letter[vowel] !== vowelArray[letter]) {
+            output.push(userInput.concat("ay"));
+          } else {
+            output.push("FAILURE");
           }
         }
+
       }
-console.log(output);
 
-
-
-
+      output.splice(1);
+      var almostFinal = output.join("");
+      var final = almostFinal.replace(/,/g , "");
+      console.log(final);
+      $("#result").text(final);
   });
 });
+
+
+
+
+
+
+// for (var letter = 0; letter < userInput.length; letter++) {
+//   for (var consonant = 0; consonant < consonants.length; consonant++) {
+//     if (consonants[consonant] !== userInput[letter]) {
+//       output.push(userInput + "ay");
+//     }
+//   }
+// }
