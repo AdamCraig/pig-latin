@@ -1,39 +1,50 @@
 $(document).ready(function() {
-  $("form").submit(function(event) {
-    event.preventDefault();
 
-    var vowelArray = ["a", "e", "i", "o", "u"];
-    var userInput = $("#userInput").val().toLowerCase().split("");
-    var output = [];
+    var vowelArray = ["a", "e", "i", "o", "u", "y"];
 
-      for (var letter = 0; letter < userInput.length; letter++) {
-        for (var vowel = 0; vowel < vowelArray.length; vowel++) {
-          if (letter[vowel] !== vowelArray[letter]) {
-            output.push(userInput.concat("ay"));
-          } else {
-            output.push("FAILURE");
+    var isVowel = function(letter) {
+      for (var index = 0; index < vowelArray.length; index++) {
+        if (letter === vowelArray[index]) {
+          return true;
           }
-        }
-
+      }
+        return false;
       }
 
-      output.splice(1);
-      var almostFinal = output.join("");
-      var final = almostFinal.replace(/,/g , "");
-      console.log(final);
-      $("#result").text(final);
+    var makeWord = function(string) {
+      if (isVowel(string[0]) && string[0] !== "y") {
+        return string.concat("ay");
+      } else {
+        for (var letter = 1; letter < string.length; letter++) {
+          if (isVowel(string[letter])) {
+            if ((string[letter]) === "u" && (string[letter -1]) === "q") {
+              var front = string.slice(0, letter +1);
+              var middle = string.slice(letter +1, string.length);
+              return middle + front + "ay";
+            } else {
+              var front = string.slice(0, letter);
+              var middle = string.slice(letter, string.length);
+              return middle + front + "ay";
+            }
+            }
+        }
+      }
+      return string + "ay";
+    }
+
+    var translate = function(sentence) {
+      var newSentence = [];
+      wordArray = sentence.split(" ");
+      for (var word = 0; word < wordArray.length; word++) {
+        newSentence.push(makeWord(wordArray[word]));
+      }
+      return newSentence.join(" ");
+    }
+
+      $("form").submit(function(event) {
+        event.preventDefault();
+        var sentence = $("#userInput").val().toLowerCase();
+        var final = translate(sentence);
+        $("#result").text(final);
   });
 });
-
-
-
-
-
-
-// for (var letter = 0; letter < userInput.length; letter++) {
-//   for (var consonant = 0; consonant < consonants.length; consonant++) {
-//     if (consonants[consonant] !== userInput[letter]) {
-//       output.push(userInput + "ay");
-//     }
-//   }
-// }
